@@ -3,6 +3,11 @@ Converts an yaml file with bookmark data to a a bookmark html file that can be i
 
 Supports name, url, description, tags and icons.
 
+Comes in both a python and a groovy version.
+
+Only the groovy version has support for numbering bookmarks to retain their order in Internet Explorer.
+Apart from that they are functionally equivalent
+
 Example input yaml:
 
     ---
