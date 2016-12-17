@@ -8,7 +8,7 @@ Comes in both a python and a groovy version.
 Only the groovy version has support for numbering bookmarks to retain their order in Internet Explorer.
 Apart from that they are functionally equivalent
 
-Example input yaml:
+## Example input yaml:
 
     ---
     - name: test bookmarks
@@ -31,3 +31,6 @@ Example input yaml:
           description: A country in the Himalayas
       - name: Youtube
         url: https://www.youtube.com
+
+## Result
+![Screenshot](screenshot.png)
