@@ -40,4 +40,4 @@ Apart from that they are functionally equivalent
         url: https://www.youtube.com
 
 ## Result
-![Screenshot](screenshot.png)
+![Screenshot](doc/screenshot.png)
