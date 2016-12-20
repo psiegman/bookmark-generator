@@ -23,7 +23,7 @@ if(! options) {
     System.exit(1)
 }
 
-if (! options.arguments) {
+if (! options.arguments()) {
     cli.usage()
     return
 }
@@ -74,7 +74,7 @@ def generateBookmarks(bookmarks, level, out) {
 	def orderCounter = 1
 	out.write("${indent}<DL><p>\n")
 	bookmarks.each { bookmark ->
-
+		
 		// counter
 		def counter = ''
 		if (nrDigits > 0) {
