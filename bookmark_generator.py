@@ -7,11 +7,11 @@ Supports name, url, description, tags and icons.
 Example input yaml::
 
     ---
-    - name: test bookmarks
+    - folder: test bookmarks
       bookmarks:
       - name: Google
         url: https://www.google.com
-      - name: Wikipedia
+      - folder: Wikipedia
         bookmarks:
         - name: Wikipedia English Home
           url: https://en.wikipedia.org/
@@ -58,52 +58,53 @@ out.write('''<!DOCTYPE NETSCAPE-Bookmark-file-1>
 ''')
 
 
-def writeBookmarks(bookmarks, level, out):
+def writeBookmarks(nodes, level, out):
 	indent = '    '*level
 
 	out.write(indent + '<DL><p>\n')
-	for bookmark in bookmarks:
+	for node in nodes:
+
+		# a folder
+		if 'folder' in node:
+			out.write(indent + '<DT><H3>' + node['folder'] + '</H3>\n')
+			writeBookmarks(node['bookmarks'], level + 1, out)
+
+		# a separator
+		elif SEPARATOR_NAME == node['name'] and not 'bookmarks' in node:
+			out.write(indent + '<HR>\n')
 
 		# a bookmark
-		if 'url' in bookmark:
+		elif 'url' in node:
 			out.write(indent + '<DT><A')
 
 			# write href
-			out.write(' HREF="' + bookmark['url'] + '"')
+			out.write(' HREF="' + node['url'] + '"')
 
 			# write icon, data uri format (https://en.wikipedia.org/wiki/Data_URI_scheme)
-			if 'icon' in bookmark:
-				out.write(' ICON="' + bookmark['icon'] + '"')
+			if 'icon' in node:
+				out.write(' ICON="' + node['icon'] + '"')
 
 			# write tags
-			if tag_all or 'tags' in bookmark:
+			if tag_all or 'tags' in node:
 				tags = []
 
 				if tag_all:
 					tags.append(tag_all)
 
-				if 'tags' in bookmark:
-					tags.extend(bookmark['tags'])
+				if 'tags' in node:
+					tags.extend(node['tags'])
 
 				out.write(' TAGS="' + ",".join(tags) + '"')
 
 			out.write('>')
-			out.write(bookmark['name'])
+			out.write(node['name'])
 			out.write('</A>')
 			out.write('\n')
 
 			# write description
-			if 'description' in bookmark:
-				out.write(indent + '<DD>' + bookmark['description'] + '\n')
+			if 'description' in node:
+				out.write(indent + '<DD>' + node['description'] + '\n')
 
-		# a separator
-		elif SEPARATOR_NAME == bookmark['name'] and not 'bookmarks' in bookmarks:
-			out.write(indent + '<HR>\n')
-		else:
-			out.write(indent + '<DT><H3>' + bookmark['name'] + '</H3>\n')
-
-		if 'bookmarks' in bookmark:
-			writeBookmarks(bookmark['bookmarks'], level + 1, out)
 	out.write(indent + '</DL><p>\n')
 
 writeBookmarks(bookmark_data, 0, out)

@@ -59,13 +59,13 @@ def isSeparator(bookmark) {
 }
 
 // recursively writes bookmark data to out
-def generateBookmarks(bookmarks, level, out) {
+def generateBookmarks(nodes, level, out) {
 	def indent = ''
 	level.times { indent += "    "}
 
 	def nrDigits = -1
 	if (number_all) {
-		nrDigits = Math.ceil(Math.log10(bookmarks.findAll{! isSeparator(it)}.size()))
+		nrDigits = Math.ceil(Math.log10(nodes.findAll{! isSeparator(it)}.size()))
 		if (nrDigits == 1) {
 			nrDigits = 2
 		}
@@ -73,7 +73,7 @@ def generateBookmarks(bookmarks, level, out) {
 
 	def orderCounter = 1
 	out.write("${indent}<DL><p>\n")
-	bookmarks.each { bookmark ->
+	nodes.each { node ->
 		
 		// counter
 		def counter = ''
@@ -81,28 +81,40 @@ def generateBookmarks(bookmarks, level, out) {
 			counter = ('' + (orderCounter++)).padLeft(nrDigits, '0') + " "
 		}
 
+		// a folder
+		if (node.folder) {
+			out.write("${indent}<DT><H3>${counter}${node.folder}</H3>\n")
+			if (node.bookmarks) {
+				generateBookmarks(node.bookmarks, level + 1, out)
+			}
+
+		// a separator
+        } else if (isSeparator(node)) {
+			out.write("${indent}<HR>\n")
+			orderCounter--
+
 		// a bookmark
-		if (bookmark.url) {
+		} else if (node.url) {
 			out.write("${indent}<DT><A")
 
 			// write url
-			out.write(" HREF=\"${bookmark.url}\"")
+			out.write(" HREF=\"${node.url}\"")
 
 			// write icon, data uri format (https://en.wikipedia.org/wiki/Data_URI_scheme)
-			if (bookmark.icon) {
-				out.write(" ICON=\"${bookmark.icon}\"")
+			if (node.icon) {
+				out.write(" ICON=\"${node.icon}\"")
 			}
 
 			// write tags
-			if (tag_all || bookmark.tags) {
+			if (tag_all || node.tags) {
 				def tags = []
 
 				if (tag_all) {
 					tags.add(tag_all)
 				}
 
-				if (bookmark.tags) {
-					tags.addAll(bookmark.tags)
+				if (node.tags) {
+					tags.addAll(node.tags)
 				}
 
 				out.write(" TAGS=\"${tags.join(",")}\"")
@@ -112,26 +124,16 @@ def generateBookmarks(bookmarks, level, out) {
 
 
 			// write bookmark name
-			out.write("${counter}${bookmark.name}")
+			out.write("${counter}${node.name}")
 
 			out.write("</A>\n")
 
 			// write description
-			if (bookmark.description) {
-				out.write("${indent}<DD>${bookmark.description}\n")
+			if (node.description) {
+				out.write("${indent}<DD>${node.description}\n")
 			}
-
-		// a separator
-        } else if (isSeparator(bookmark)) {
-			out.write("${indent}<HR>\n")
-			orderCounter--
-
-		// a folder
 		} else {
-			out.write("${indent}<DT><H3>${counter}${bookmark.name}</H3>\n")
-			if (bookmark.bookmarks) {
-				generateBookmarks(bookmark.bookmarks, level + 1, out)
-			}
+			System.err.println("Don't know how to handle ${node}: it is not a bookmark, folder or separator")
 		}
 	}
 	out.write("${indent}</DL><p>\n")

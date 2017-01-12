@@ -17,11 +17,11 @@ Apart from that they are functionally equivalent
 ## Example input yaml:
 
     ---
-    - name: test bookmarks
+    - folder: test bookmarks
       bookmarks:
       - name: Google
         url: https://www.google.com
-      - name: Wikipedia
+      - folder: Wikipedia
         bookmarks:
         - name: Wikipedia English Home
           url: https://en.wikipedia.org/
