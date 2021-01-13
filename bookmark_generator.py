@@ -35,6 +35,7 @@ import argparse
 
 parser = argparse.ArgumentParser()
 parser.add_argument('-t', '--tag', help="add a tag to all bookmarks")
+parser.add_argument('-o', '--output', help="the bookmark output file")
 parser.add_argument("inputfile", help="the bookmark input file")
 args = parser.parse_args()
 
@@ -46,6 +47,9 @@ SEPARATOR_NAME = u'---'
 
 tag_all = args.tag
 
+if args.output:
+	out = open(args.output, "w")
+	
 # write bookmark file header
 out.write('''<!DOCTYPE NETSCAPE-Bookmark-file-1>
 <!-- This is an automatically generated file.
