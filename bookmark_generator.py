@@ -38,7 +38,7 @@ parser.add_argument('-t', '--tag', help="add a tag to all bookmarks")
 parser.add_argument("inputfile", help="the bookmark input file")
 args = parser.parse_args()
 
-bookmark_data = yaml.load(open(args.inputfile))
+bookmark_data = yaml.safe_load(open(args.inputfile))
 
 out = sys.stdout
 
