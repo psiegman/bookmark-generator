@@ -1,0 +1,7 @@
+!*.groovy
+!*.py
+!*.yml
+!requirements.txt
+
+doc
+readme.md
