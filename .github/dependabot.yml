@@ -1,10 +1,14 @@
 version: 2
 updates:
-  - package-ecosystem: "pip"
-    directory: "/"
-    schedule:
-      interval: "daily"
+- package-ecosystem: "pip"
+  directory: "/"
+  schedule:
+    interval: "daily"
+  assignees:
+  - "georgettica"
 - directory: "/"
   package-ecosystem: "docker"
   schedule:
     interval: "daily"
+  assignees:
+  - "georgettica"
