@@ -12,3 +12,12 @@ updates:
     interval: "daily"
   assignees:
   - "georgettica"
+- directory: "/"
+  labels:
+  - "dependency"
+  - "merge when passing"
+  package-ecosystem: "github-actions"
+  schedule:
+    interval: "daily"
+  assignees:
+  - "georgettica"
